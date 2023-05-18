@@ -62,7 +62,6 @@ const allPassword = [
   "9",
   "0",
 ];
-const domainName = "http://www.plus.com/";
 
 function generatePassword() {
   let randomPassword = "";
@@ -71,7 +70,7 @@ function generatePassword() {
       allPassword[Math.floor(Math.random() * allPassword.length)];
   }
 
-  return domainName + randomPassword;
+  return randomPassword;
 }
 
 module.exports = generatePassword;

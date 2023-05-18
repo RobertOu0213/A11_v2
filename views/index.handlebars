@@ -1,4 +1,4 @@
-{{#if renderPassword}}
+{{#if shortURL}}
 
   <ul class="list-group">
     <h3>Success! Please use the link:</h3>
@@ -6,7 +6,8 @@
       <div class="d-flex">
         <div class="me-auto">
           <h4 style="display: inline; vertical-align: middle;">
-            {{renderPassword}}
+            http://localhost:3000/{{shortURL}}
+            {{!-- {{origin}}/{{shortURL}} --}}
           </h4>
         </div>
       </div>

@@ -20,27 +20,78 @@ app.get("/url/new", (req, res) => {
   res.render("new");
 });
 
+//寫法一
+// app.post("/", (req, res) => {
+//   const shortURL = generatePassword();
+
+//   URL.findOne({ originalURL: req.body.originalURL })
+//     .then((data) => {
+//       if (data) return data;
+//       else
+//         URL.create({
+//           shortURL,
+//           originalURL: req.body.originalURL,
+//         });
+//     })
+//     .then(res.render("index", { renderPassword: shortURL }))
+//     .catch((error) => console.log(error));
+// });
+
+// app.post("/", (req, res) => {
+//   const shortURL = generatePassword();
+
+//   URL.findOne({ originalURL: req.body.originalURL })
+//     .then((data) =>
+//       data ? data : URL.create({ shortURL, originalURL: req.body.originalURL })
+//     )
+//     .then(res.render("index", { renderPassword: shortURL }))
+//     .catch((error) => console.log(error));
+// });
+
+// app.get("/:id", (req, res) => {
+//   const { id } = req.params;
+//   URL.findOne({ id })
+//     .then((data) => {
+//       res.redirect(data.originalURL);
+//     })
+//     .catch((error) => console.log(error));
+// });
+
+// app.get("/:shortURL", (req, res) => {
+//   const { shortURL } = req.params;
+
+//   URL.findOne({ shortURL })
+//     .then((data) => {
+//       res.redirect(data.originalURL);
+//     })
+//     .catch((error) => console.error(error));
+// });
+
+//寫法二
 app.post("/", (req, res) => {
+  if (!req.body.originalURL) return res.redirect("/");
   const shortURL = generatePassword();
 
   URL.findOne({ originalURL: req.body.originalURL })
-    .then(
-      URL.create({
-        shortURL,
-        originalURL: req.body.originalURL,
+    .then((data) =>
+      data ? data : URL.create({ shortURL, originalURL: req.body.originalURL })
+    )
+    .then((data) =>
+      res.render("index", {
+        shortURL: data.shortURL,
       })
     )
-    .then(res.render("index", { renderPassword: shortURL }))
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 });
 
-app.get("http://www.plus.com/:id", (req, res) => {
-  const domain = "http://www.plus.com/";
-  const { id } = req.params;
-  const shortURL = domain + id;
+app.get("/:shortURL", (req, res) => {
+  const { shortURL } = req.params;
+
   URL.findOne({ shortURL })
-    .then(res.redirect(originalURL))
-    .catch((error) => console.log(error));
+    .then((data) => {
+      res.redirect(data.originalURL);
+    })
+    .catch((error) => console.error(error));
 });
 
 app.listen(port, () => {
